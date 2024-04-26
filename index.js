@@ -32,6 +32,22 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/touristspotsad", async (req, res) => {
+      const cursor = TSpotsCollection.find()
+        .sort({ average_cost: 1 })
+        .collation({ locale: "en_US", numericOrdering: true });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/userspots", async (req, res) => {
+      const email = req.body;
+      const filter = { email: email };
+      const cursor = TSpotsCollection.find(filter);
+      const result = cursor.sort();
+      res.send(result);
+    });
+
     app.post("/touristspots", async (req, res) => {
       const newSpot = req.body;
 

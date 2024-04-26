@@ -48,11 +48,14 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/userspots", async (req, res) => {
-      const email = req.body;
-      const filter = { email: email };
+    app.get("/touristspots/:email", async (req, res) => {
+      const email = req.params.email;
+      console.log(email);
+      const filter = {
+        user_email: email,
+      };
       const cursor = TSpotsCollection.find(filter);
-      const result = cursor.sort();
+      const result = await cursor.toArray();
       res.send(result);
     });
 

@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kygk2l2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -69,6 +69,29 @@ async function run() {
 
     app.get("/blogs", async (req, res) => {
       const cursor = blogsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/touristspot/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {
+        _id: new ObjectId(id),
+      };
+      const result = await TSpotsCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/country_spots/:country", async (req, res) => {
+      const country = req.params.country;
+      console.log(country);
+      const query = {
+        country_name: country,
+      };
+      const cursor = TSpotsCollection.find(query).collation({
+        locale: "en",
+        strength: 2,
+      });
       const result = await cursor.toArray();
       res.send(result);
     });

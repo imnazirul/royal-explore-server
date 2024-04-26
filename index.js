@@ -25,6 +25,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     const TSpotsCollection = client.db("tourismDB").collection("touristSpots");
+    const countryCollection = client.db("tourismDB").collection("countries");
+    const blogsCollection = client.db("tourismDB").collection("blogs");
 
     app.get("/touristspots", async (req, res) => {
       const cursor = TSpotsCollection.find();
@@ -55,6 +57,18 @@ async function run() {
         user_email: email,
       };
       const cursor = TSpotsCollection.find(filter);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/countries", async (req, res) => {
+      const cursor = countryCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/blogs", async (req, res) => {
+      const cursor = blogsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });

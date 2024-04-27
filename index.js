@@ -101,6 +101,36 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/touristspots/:id", async (req, res) => {
+      const id = req.params.id;
+      const spot = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedSpot = {
+        $set: {
+          user_email: spot.user_email,
+          user_name: spot.user_name,
+          tourists_spot_name: spot.tourists_spot_name,
+          country_name: spot.country_name,
+          location: spot.location,
+          average_cost: spot.average_cost,
+          seasonality: spot.seasonality,
+          travel_time: spot.travel_time,
+          image: spot.image,
+          total_visitors_per_year: spot.total_visitors_per_year,
+          short_description: spot.short_description,
+          long_description: spot.long_description,
+        },
+      };
+
+      const result = await TSpotsCollection.updateOne(
+        filter,
+        updatedSpot,
+        options
+      );
+      res.send(result);
+    });
+
     app.delete("/touristspots/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };

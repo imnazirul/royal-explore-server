@@ -52,7 +52,6 @@ async function run() {
 
     app.get("/touristspots/:email", async (req, res) => {
       const email = req.params.email;
-      console.log(email);
       const filter = {
         user_email: email,
       };
@@ -84,7 +83,6 @@ async function run() {
 
     app.get("/country_spots/:country", async (req, res) => {
       const country = req.params.country;
-      console.log(country);
       const query = {
         country_name: country,
       };
@@ -102,6 +100,15 @@ async function run() {
       const result = await TSpotsCollection.insertOne(newSpot);
       res.send(result);
     });
+
+    app.delete("/touristspots/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+
+      const result = await TSpotsCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log(

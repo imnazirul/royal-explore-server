@@ -1,1 +1,1 @@
-<h1>Assignment Ten Server</h1>
+<h1>Royal Explore Server</h1>
